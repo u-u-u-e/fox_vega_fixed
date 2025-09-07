@@ -1,39 +1,27 @@
-import os
 import json
-from pyrogram import Client, idle
-from pyromod import listen  # noqa: F401
-from pyrogram.types import ChatPrivileges, ChatPermissions  # noqa: F401
+from pyrogram import Client, filters
+from pyrogram.types import ChatPrivileges, ChatPermissions
 
-# Load config
-CONFIG_PATH = os.getenv("CONFIG_PATH", "config.json")
-with open(CONFIG_PATH, "r", encoding="utf-8") as f:
-    config = json.load(f)
+# قراءة الإعدادات من config.json
+with open("config.json", "r", encoding="utf-8") as file:
+    config = json.load(file)
 
-api_id = int(os.getenv("API_ID", config.get("api_id", 0)))
-api_hash = os.getenv("API_HASH", config.get("api_hash", ""))
-bot_token = os.getenv("BOT_TOKEN", config.get("bot_token", ""))
+sourse_dev = config.get("sourse_dev", None)
 
-# Core metadata
-sourse_dev = config.get("sourse_dev")
 DEVS = []
-if sourse_dev:
-    DEVS.append(sourse_dev)
+DEVS.append(7028046857)  # ID المطور
+owner_id = sourse_dev
+bot_id = config["BOT_TOKEN"].split(":")[0]
 
-# Init bot client
-bot = Client(
-    "m4o",
-    api_id=api_id,
-    api_hash=api_hash,
-    bot_token=bot_token,
-    plugins=dict(root="MZombie"),
-)
 
-async def start_zombiebot():
-    await bot.start()
-    # Notify dev(s)
-    for dev in DEVS:
-        try:
-            await bot.send_message(dev, "◍ تم تشغيل الصانع بنجاح 🚦\n√")
-        except Exception:
-            pass
-    await idle()
+def register_handlers(app: Client, call_app=None):
+
+    @app.on_message(filters.command("start"))
+    async def start_handler(client, message):
+        await message.reply_text("✅ تم تشغيل البوت بنجاح")
+
+    @app.on_message(filters.user(DEVS) & filters.command("ping"))
+    async def ping_handler(client, message):
+        await message.reply_text("🏓 البوت شغال وعم يرد عليك يا مطور!")
+
+    # هون فيك تضيف باقي الأوامر (من ملفات plugins لو عندك)
