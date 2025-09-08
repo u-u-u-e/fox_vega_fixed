@@ -9,9 +9,9 @@ lyricsgenius>=3.0.1
 motor>=3.5.1
 pillow>=10.4.0
 psutil>=6.0.0
-pytgcalls==3.0.0.dev23
+pytgcalls>=3.0.0
 pykeyboard>=0.1.5
-pyrogram==2.0.106
+pyrogram>=2.0.106
 pyromod>=1.5
 python-dotenv>=1.0.1
 pyyaml>=6.0.2
